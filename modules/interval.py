@@ -26,12 +26,17 @@ class Interval:
         return self.__low > self.__high
 
     def isInfinite(self):
-        return self.__low == float("inf") and self.__high == float("inf")
+        return self.__low == float("-inf") and self.__high == float("inf")
 
-    def __in__(self, other):
-        if self.isEmpty() or other.isEmpty():
-            raise ValueError("Cannot compare against an empty interval")
-        return self.__low >= other.getLow() and self.__high <= other.getHigh()
+    def __contains__(self, other):
+        if self.isEmpty() and other.isEmpty():
+            return True
+        elif self.isEmpty():
+            return False
+        elif other.isEmpty():
+            return True
+        else:
+            return self.__low <= other.getLow() and self.__high >= other.getHigh()
 
     def getLow(self):
         return self.__low
@@ -39,10 +44,21 @@ class Interval:
     def getHigh(self):
         return self.__high
 
+    # [] < [a, b] < [a, b+y] < [a+x, c] < [-Inf, Inf] and x, y > 0
     def __lt__(self, other):
-        if self.isEmpty() or other.isEmpty():
-            raise ValueError("Cannot compare against an empty interval")
-        if self.__low < other.getLow():
+        if self.isEmpty() and other.isEmpty():
+            return False
+        elif self.isEmpty():
+            return True
+        elif other.isEmpty():
+            return False
+        elif self.isInfinite() and other.isInfinite():
+            return False
+        elif self.isInfinite():
+            return False
+        elif other.isInfinite():
+            return True
+        elif self.__low < other.getLow():
             return True
         elif self.__low > other.getLow():
             return False
@@ -53,9 +69,12 @@ class Interval:
                 return False
 
     def __eq__(self, other):
-        if self.isEmpty() or other.isEmpty():
-            raise ValueError("Cannot compare against an empty interval")
-        return self.__low == other.getLow() and self.__high == other.getHigh()
+        if self.isEmpty() and other.isEmpty():
+            return True
+        elif self.isEmpty() or other.isEmpty():
+            return False
+        else:
+            return self.__low == other.getLow() and self.__high == other.getHigh()
 
     def __gt__(self, other):
         return not(self < other and self == other)
@@ -65,6 +84,12 @@ class Interval:
 
     def __ge__(self, other):
         return self > other or self == other
+    
+    def __str__(self):
+        if self.isEmpty():
+            return '[]'
+        else:
+            return '[' + str(self.__low) + ', ' + str(self.__high) + ']'
 
     @staticmethod
     def getEmptyInterval():
