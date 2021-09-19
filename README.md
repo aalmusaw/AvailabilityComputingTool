@@ -6,9 +6,9 @@ This tool takes weekly availabilities from multiple people in the form of json f
 - Clone the repository
 - Ensure you use Python 3
 - Populate the data directory with json-formatted schedules with names: `<anything>_<anything>.json`. Preferrably, do not use underscores in `<anything>`.
-- Navigate to AvailabilityComputingTool.
-- Run the command `python3 main.py input=<data_dir> output=<output_file_name>`
-- You can omit the `input` and `output` args, but this will use the default input `AvailabilityComputingTool/data` and default output `AvailabilityComputingTool/availability.txt`.
+- Navigate to the parent directory of AvailabilityComputingTool.
+- Run the command `python3  -m AvailabilityComputingTool.main input=<data_dir> output=<output_file_name>`
+- You can omit the `input` and `output` args, but this will use the default input `data` and default output `availability.txt`.
 
 # Sample JSON Schedule 1: 
 ali_schedule.json
